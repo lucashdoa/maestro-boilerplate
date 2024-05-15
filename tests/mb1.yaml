@@ -1,0 +1,32 @@
+### ---
+#  Case Id: MB-1
+#  Description: Verify successful login
+### ---
+
+appId: ${APP_ID}
+onFlowStart:
+    - launchApp
+    - runScript: ../pageobjects/login.js
+    - runScript: ../pageobjects/shared/navbar.js
+    - runScript:
+        when:
+          true: ${!output.runId}
+        file: ../integrations/qase/createTestRun.js
+    - runScript: ../integrations/qase/setResultFailed.js
+onFlowComplete:
+    - runScript: ../integrations/qase/sendTestResult.js
+    - stopApp
+---
+- tapOn: ${output.navigation.login}
+- tapOn:
+    id: ${output.login.email}
+- inputText: "test@webdriver.io"
+- tapOn:
+    id: ${output.login.password}
+- inputText: "Test1234!"
+- tapOn:
+    id: ${output.login.loginBtn}
+- assertVisible: "Success"
+- assertVisible: "You are logged in!"
+- tapOn: "OK"
+- runScript: ../integrations/qase/setResultPassed.js

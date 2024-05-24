@@ -1,0 +1,5 @@
+appId: ${APP_ID}
+---
+- runScript: ./login.js
+- runScript: ./swipe.js
+- runScript: ./shared/navbar.js

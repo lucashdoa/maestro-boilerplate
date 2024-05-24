@@ -1,17 +1,14 @@
 ### ---
-#  Case Id: MB-1
-#  Description: Verify successful login
+#  Id: MB-1
+#  Name: Verify successful login
+#  Description: Login with valid credentials and assert correct success message
 ### ---
 
 appId: ${APP_ID}
 onFlowStart:
     - launchApp
-    - runScript: ../pageobjects/login.js
-    - runScript: ../pageobjects/shared/navbar.js
-    - runScript:
-        when:
-          true: ${!output.runId}
-        file: ../integrations/qase/createTestRun.js
+    - runFlow: ../pageobjects/loadElements.yaml
+    - runScript: ../contexts/mb1.js
     - runScript: ../integrations/qase/setResultFailed.js
 onFlowComplete:
     - runScript: ../integrations/qase/sendTestResult.js
@@ -20,10 +17,10 @@ onFlowComplete:
 - tapOn: ${output.navigation.login}
 - tapOn:
     id: ${output.login.email}
-- inputText: "test@webdriver.io"
+- inputText: ${output.validEmail}
 - tapOn:
     id: ${output.login.password}
-- inputText: "Test1234!"
+- inputText: ${output.validPassword}
 - tapOn:
     id: ${output.login.loginBtn}
 - assertVisible: "Success"

@@ -1,0 +1,22 @@
+### ---
+#  Id: MB-2
+#  Name: Verify hidden image is found
+#  Description: Swipe horizontaly to assert that the hidden image at the bottom of the screen is visible
+### ---
+
+appId: ${APP_ID}
+onFlowStart:
+    - launchApp
+    - runFlow: ../pageobjects/loadElements.yaml
+    - runScript: ../contexts/mb2.js
+    - runScript: ../integrations/qase/setResultFailed.js
+onFlowComplete:
+    - runScript: ../integrations/qase/sendTestResult.js
+    - stopApp
+---
+- tapOn: ${output.navigation.swipe}
+- swipe:
+    direction: UP
+- assertVisible:
+    id: ${output.swipe.robotImage}
+- runScript: ../integrations/qase/setResultPassed.js
